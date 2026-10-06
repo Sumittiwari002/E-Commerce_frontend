@@ -1,11 +1,7 @@
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import "../assets/style/Forms.css";
-import useFetch from "../customHooks/useFetch";
 import { useEffect, useState } from "react";
-import { s3Client } from "../utilities/s3";
-import { PutObjectCommand } from "@aws-sdk/client-s3";
-import firestoreApi from "../settings/apiSetting";
 import axios from "axios";
 
 const ProductSchema = Yup.object().shape({
@@ -48,7 +44,7 @@ const AddProduct = () => {
   },[])
 
 
-  let data1 = useFetch("categories");
+  // let data1 = useFetch("categories");
   // let[data1,setData1] = useState([]);
   //   useEffect(()=>{
   //       getDocs('categories').then((response) =>{
@@ -59,7 +55,7 @@ const AddProduct = () => {
 
     let [message, setMessage] = useState();
 
-  let data2 = useFetch("brands");
+  // let data2 = useFetch("brands");
   // let[data2,setData2] = useState([]);
   //   useEffect(()=>{
   //       getDocs('brands').then((response) =>{
@@ -189,7 +185,7 @@ const AddProduct = () => {
             }
           }}
         >
-          {({ errors, touched, setFieldValue }) => (
+          {({ errors, touched }) => (
             <Form>
 
               <div className="form-group">

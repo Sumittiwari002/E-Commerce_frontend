@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import "./Productfilter.css";
-import { getDocs } from "../../utilities/crudOperation";
-import useFetch from "../../customHooks/useFetch";
 import {useDispatch} from 'react-redux'
 import { shareCategroyId } from "../../redux/slices/categorySlice";
 import axios from "axios";

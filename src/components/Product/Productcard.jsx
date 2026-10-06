@@ -1,13 +1,11 @@
 import { Link } from "react-router-dom";
 import "./Productcard.css";
-import useFetch from "../../customHooks/useFetch";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
 const Productcard = () => {
   const [data1, setData1] = useState([]);
-  const [status, setStatus] = useState(true);
 
   const catId = useSelector((state) => state.category.categoryId);
   console.log(catId);

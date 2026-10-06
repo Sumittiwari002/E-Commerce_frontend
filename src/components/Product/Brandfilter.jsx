@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import "./Productfilter.css";
-import { getDocs } from "../../utilities/crudOperation";
 import axios from "axios";
 
 const Brandfilter = () => {

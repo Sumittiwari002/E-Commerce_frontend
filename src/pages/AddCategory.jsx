@@ -2,7 +2,6 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import "../assets/style/Forms.css";
 import { useState } from "react";
-// import { addDocs } from "../utilities/crudOperation";
 import axios from "axios";
 
 const CategorySchema = Yup.object().shape({
