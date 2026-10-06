@@ -1,0 +1,11 @@
+.site-footer{
+    /* margin-top:60px; */
+    background:#1f2937;
+    color:#fff;
+    padding:22px;
+    text-align:center;
+}
+
+.site-footer p{
+    font-size:14px;
+}
