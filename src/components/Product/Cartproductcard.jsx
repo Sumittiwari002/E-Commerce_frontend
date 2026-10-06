@@ -1,4 +1,4 @@
-import "./CartProductCard.css";
+import "./CartproductCard.css";
 
 const CartProductCard = ({ product }) => {
   return (
