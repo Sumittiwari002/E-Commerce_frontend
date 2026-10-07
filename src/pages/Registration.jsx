@@ -46,7 +46,7 @@ const Registration = () => {
             confirmPassword: "",
           }}
           validationSchema={RegistrationSchema}
-          onSubmit={async (values,{resetForm}) => {
+          onSubmit={async (values) => {
             // alert(1)
             // console.log(values);
 

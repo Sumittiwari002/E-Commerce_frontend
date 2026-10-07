@@ -1,89 +1,176 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
 import CartProductCard from "../components/Product/Cartproductcard";
-import "../assets/style/Cart.css";
 
 const Cart = () => {
-  const cartProducts = [
-    {
-      id: 1,
-      productName: "iPhone 16 Pro",
-      brand: "Apple",
-      category: "Mobiles",
-      productPrice: 119999,
-      quantity: 1,
-      image: "https://picsum.photos/200?1",
-    },
-    {
-      id: 2,
-      productName: "Sony Headphones",
-      brand: "Sony",
-      category: "Electronics",
-      productPrice: 15999,
-      quantity: 2,
-      image: "https://picsum.photos/200?2",
-    },
-  ];
 
-  const totalItems = cartProducts.reduce(
-    (acc, item) => acc + item.quantity,
-    0
-  );
+  const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const totalPrice = cartProducts.reduce(
-    (acc, item) => acc + item.productPrice * item.quantity,
-    0
-  );
 
-  const deliveryCharge = 99;
+  // ==========================
+  // GET CART
+  
 
-  const grandTotal = totalPrice + deliveryCharge;
+  const getCart = async () => {
+
+    try {
+
+      const token = localStorage.getItem("accessToken");
+      console.log("ACCESS TOKEN:", token);
+
+      if (!token) {
+        alert("Please login first");
+        return;
+      }
+
+      const response = await axios.get(
+        import.meta.env.VITE_API_NODEPATH +
+        "/api/cart/getcart",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("Cart response:", response.data);
+
+      if (response.data.success) {
+
+        setCartItems(
+          response.data.cart.items || []
+        );
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Get cart error:",
+        error
+      );
+
+      console.error(
+        error.response?.data
+      );
+
+    } finally {
+
+      setLoading(false);
+
+    }
+  };
+  
+  // LOAD CART
+  
+
+  useEffect(() => {
+
+    getCart();
+
+  }, []);
+
+
+  // ==========================
+  // REMOVE PRODUCT
+  // ==========================
+
+  const handleRemove = (item) => {
+
+    console.log(
+      "Remove product:",
+      item.product._id
+    );
+
+  };
+
+
+  // ==========================
+  // INCREASE
+  // ==========================
+
+  const handleIncrease = (item) => {
+
+    console.log(
+      "Increase:",
+      item.product._id
+    );
+
+  };
+
+
+  // ==========================
+  // DECREASE
+  // ==========================
+
+  const handleDecrease = (item) => {
+
+    console.log(
+      "Decrease:",
+      item.product._id
+    );
+
+  };
+
+
+  // ==========================
+  // LOADING
+  // ==========================
+
+  if (loading) {
+
+    return (
+      <div>
+        <h2>Loading cart...</h2>
+      </div>
+    );
+
+  }
+
+
+  // ==========================
+  // EMPTY CART
+  // ==========================
+
+  if (cartItems.length === 0) {
+
+    return (
+      <div>
+        <h2>Your cart is empty</h2>
+      </div>
+    );
+
+  }
+
+
+  // ==========================
+  // DISPLAY CART
+  // ==========================
 
   return (
-    <section className="cart-page">
 
-      <div className="cart-products">
+    <div className="cart-container">
 
-        {cartProducts.map((item) => (
-          <CartProductCard
-            key={item.id}
-            product={item}
-          />
-        ))}
+      <h1>
+        My Cart
+      </h1>
 
-      </div>
 
-      <aside className="bill-card">
+      {cartItems.map((item) => (
 
-        <h3>Price Details</h3>
+        <CartProductCard
+          key={item.product._id}
+          item={item}
+          onRemove={handleRemove}
+          onIncrease={handleIncrease}
+          onDecrease={handleDecrease}
+        />
 
-        <div className="bill-row">
-          <span>Total Items</span>
-          <span>{totalItems}</span>
-        </div>
+      ))}
 
-        <div className="bill-row">
-          <span>Subtotal</span>
-          <span>₹ {totalPrice}</span>
-        </div>
+    </div>
 
-        <div className="bill-row">
-          <span>Delivery</span>
-          <span>₹ {deliveryCharge}</span>
-        </div>
-
-        <hr />
-
-        <div className="bill-row total">
-          <span>Total Amount</span>
-          <span>₹ {grandTotal}</span>
-        </div>
-
-        <button className="checkout-btn">
-          Proceed To Checkout
-        </button>
-
-      </aside>
-
-    </section>
   );
 };
 

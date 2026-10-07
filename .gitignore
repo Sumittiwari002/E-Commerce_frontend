@@ -12,7 +12,7 @@ dist
 dist-ssr
 *.local
 .env
-utilities
+src/utilities/s3.jsx
 
 # Editor directories and files
 .vscode/*

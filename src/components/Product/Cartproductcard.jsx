@@ -1,47 +1,69 @@
 import "./Cartproductcard.css";
 
-const CartProductCard = ({ product }) => {
+const CartProductCard = ({ item, onRemove, onIncrease, onDecrease }) => {
+  const product = item.product;
+
   return (
     <article className="cart-card">
 
+      {/* Product Image */}
       <div className="cart-image">
         <img
-          src={product.image}
-          alt={product.productName}
+          src={import.meta.env.VITE_API_NODEPATH + product.path}
+          alt={product.name}
         />
       </div>
 
+      {/* Product Information */}
       <div className="cart-content">
 
-        <h3>{product.productName}</h3>
+        <h3>{product.name}</h3>
 
         <p className="brand">
-          Brand : <span>{product.brand}</span>
+          Brand :{" "}
+          <span>
+            {product.brandId?.name || "N/A"}
+          </span>
         </p>
 
         <p className="category">
-          Category : <span>{product.category}</span>
+          Category :{" "}
+          <span>
+            {product.categoryId?.name || "N/A"}
+          </span>
         </p>
 
         <p className="price">
-          ₹ {product.productPrice}
+          ₹ {product.price}
         </p>
 
+        {/* Quantity */}
         <div className="quantity-box">
 
-          <button>-</button>
+          <button
+            onClick={() => onDecrease(item)}
+            disabled={item.quantity <= 1}
+          >
+            -
+          </button>
 
-          <span>{product.quantity}</span>
+          <span>{item.quantity}</span>
 
-          <button>+</button>
+          <button onClick={() => onIncrease(item)}>
+            +
+          </button>
 
         </div>
 
       </div>
 
+      {/* Remove */}
       <div className="cart-actions">
 
-        <button className="remove-btn">
+        <button
+          className="remove-btn"
+          onClick={() => onRemove(item)}
+        >
           Remove
         </button>
 

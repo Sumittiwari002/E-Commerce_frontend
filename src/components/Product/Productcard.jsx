@@ -1,79 +1,83 @@
 import { Link } from "react-router-dom";
 import "./Productcard.css";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import axios from "axios";
 
 const Productcard = () => {
   const [data1, setData1] = useState([]);
-
-  const catId = useSelector((state) => state.category.categoryId);
-  console.log(catId);
-  // const data = useFetch("products");
-  // console.log(data);
+  const [loadingProduct, setLoadingProduct] = useState(null);
 
   useEffect(() => {
-    axios.get(import.meta.env.VITE_API_NODEPATH + "/api/product/allProducts")
-    .then(res=>{
-      console.log(res.data);
-      setData1(res.data.dataSet);
-    })
-    // if (catId !== "") {
-    //   const url =
-    //     "https://firestore.googleapis.com/v1/projects/sumit-firebase-project/databases/(default)/documents:runQuery";
-
-    //   fetch(url, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       structuredQuery: {
-    //         from: [
-    //           {
-    //             collectionId: "products",
-    //           },
-    //         ],
-    //         where: {
-    //           fieldFilter: {
-    //             field: {
-    //               fieldPath: "productCategoryId",
-    //             },
-    //             op: "EQUAL",
-    //             value: {
-    //               stringValue: catId,
-    //             },
-    //           },
-    //         },
-    //       },
-    //     }),
-    //   })
-    //     .then((res) => res.json())
-    //     .then((response) => {
-    //       const products = response
-    //         .filter((item) => item.document)
-    //         .map((item) => item.document);
-
-    //       setData1(products);
-    //       setStatus(false);
-    //     })
-    //     .catch((error) => {
-    //       console.error(error);
-    //     });
-    // } else {
-    //   setStatus(true);
-    // }
+    axios
+      .get(
+        import.meta.env.VITE_API_NODEPATH +
+          "/api/product/allProducts"
+      )
+      .then((res) => {
+        console.log(res.data);
+        setData1(res.data.dataSet);
+      })
+      .catch((error) => {
+        console.error("Product fetch error:", error);
+      });
   }, []);
 
-  // const products = status ? data : data1;
+
+  // ADD TO CART
+
+  const handleAddToCart = async (productId) => {
+    try {
+      // Get JWT token
+      const token = localStorage.getItem("accessToken");
+
+      // Check login
+      if (!token) {
+        alert("Please login first");
+        return;
+      }
+
+      // Show loading only for clicked product
+      setLoadingProduct(productId);
+
+      const response = await axios.post(
+        import.meta.env.VITE_API_NODEPATH +
+          "/api/cart/addtocart",
+        {
+          productId: productId,
+          quantity: 1,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("Add to cart response:", response.data);
+
+      if (response.data.success) {
+        alert("Product added to cart successfully");
+      }
+    } catch (error) {
+      console.error("Add to cart error:", error.message);
+
+    } finally {
+      setLoadingProduct(null);
+    }
+  };
 
   return (
     <div className="product-grid">
+
       {data1.map((item) => {
+
         const productId = item._id;
 
         return (
-          <article className="product-card" key={productId}>
+          <article
+            className="product-card"
+            key={productId}
+          >
 
             {/* Image Section */}
             <div className="product-image">
@@ -87,7 +91,10 @@ const Productcard = () => {
               </button>
 
               <img
-                src={import.meta.env.VITE_API_NODEPATH + item.path}
+                src={
+                  import.meta.env.VITE_API_NODEPATH +
+                  item.path
+                }
                 alt={item.name}
               />
 
@@ -105,6 +112,7 @@ const Productcard = () => {
               </h3>
 
               <div className="product-rating">
+
                 <span className="stars">
                   ★★★★★
                 </span>
@@ -112,6 +120,7 @@ const Productcard = () => {
                 <span className="rating-count">
                   (4.5)
                 </span>
+
               </div>
 
               {/* Price */}
@@ -121,23 +130,29 @@ const Productcard = () => {
                   ₹{item.price}
                 </span>
 
-                <span className="old-price">
-                  ₹2,999
-                </span>
-
-                <span className="discount">
-                  20% OFF
-                </span>
-
               </div>
 
               {/* Buttons */}
               <div className="product-actions">
 
-                <button className="add-cart-btn">
-                  🛒 Add to Cart
+                {/* ADD TO CART */}
+                <button
+                  className="add-cart-btn"
+                  onClick={() =>
+                    handleAddToCart(productId)
+                  }
+                  disabled={
+                    loadingProduct === productId
+                  }
+                >
+
+                  {loadingProduct === productId
+                    ? "Adding..."
+                    : "🛒 Add to Cart"}
+
                 </button>
 
+                {/* VIEW PRODUCT */}
                 <Link
                   className="view-btn"
                   to={`/productdetails/${productId}`}
@@ -152,6 +167,7 @@ const Productcard = () => {
           </article>
         );
       })}
+
     </div>
   );
 };
