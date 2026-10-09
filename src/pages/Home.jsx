@@ -5,12 +5,12 @@ import Productcard from "../components/Product/Productcard";
 const Home = () => {
   
 
-  const products = [  
-  ];
+  const products = [];
 
 
 
   return (
+    
     <main className="container py-4">
 
       <div className="row">

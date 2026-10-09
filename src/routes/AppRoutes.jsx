@@ -23,11 +23,11 @@ const AppRoutes = () => {
 
         <main className="container">
           <Routes>
-              <Route path="/login" element={<Login />} />
+              <Route path="/" element={<Login />} />
               <Route path="/newuser" element={<Registration />} />
 
               <Route element={<ProtectedRoutes />}>
-                  <Route path="/" element={<Home />} />
+                  <Route path="/home" element={<Home />} />
                   <Route path="/cart" element={<Cart />} />
                   <Route path="/category/add" element={<AddCategory />} />
                   <Route path="/brand/add" element={<AddBrand />} />

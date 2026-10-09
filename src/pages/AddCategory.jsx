@@ -50,7 +50,7 @@ const AddCategory = () => {
               // console.log(err.response.data.message);
               setMessage(err.response.data.message);
               alert(err.response.data.message);
-              navigate("/login");
+              navigate("/");
               
             })
             // console.log(values);

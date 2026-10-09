@@ -154,7 +154,7 @@ const AddProduct = () => {
                 
                 setMessage(err.response.data.message);
                 alert(err.response.data.message);
-                navigate("/login");
+                navigate("/");
                 
               })            
                   

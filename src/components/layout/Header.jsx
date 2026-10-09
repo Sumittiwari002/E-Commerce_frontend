@@ -14,7 +14,7 @@ const Header = () => {
           <ul className="nav-links">
 
             <li>
-              <NavLink to="/">Home</NavLink>
+              <NavLink to="/home">Home</NavLink>
             </li>
 
             <li>
@@ -40,7 +40,7 @@ const Header = () => {
             </li>
 
             <li>
-              <NavLink to="/login">
+              <NavLink to="/">
                 Login
               </NavLink>
             </li>

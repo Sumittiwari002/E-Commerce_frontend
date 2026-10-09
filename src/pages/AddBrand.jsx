@@ -50,7 +50,7 @@ const AddBrand = () => {
               console.log(err.response.data);
               setMessage(err.response.data.message);
               alert(err.response.data.message);
-              navigate('/login');
+              navigate('/');
             })
 
           

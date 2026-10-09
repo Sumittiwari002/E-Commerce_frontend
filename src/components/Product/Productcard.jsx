@@ -76,7 +76,7 @@ const Productcard = () => {
           localStorage.removeItem("accessToken");
           
           // Optional: redirect to login
-          navigate("/login");
+          navigate("/");
         } else {
           alert(message || "Something went wrong");
         }
