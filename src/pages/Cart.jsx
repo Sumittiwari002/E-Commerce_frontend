@@ -7,8 +7,10 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const token = localStorage.getItem("accessToken");
+      console.log("ACCESS TOKEN:", token);
 
-  // ==========================
+
   // GET CART
   
 
@@ -16,8 +18,7 @@ const Cart = () => {
 
     try {
 
-      const token = localStorage.getItem("accessToken");
-      console.log("ACCESS TOKEN:", token);
+      
 
       if (!token) {
         alert("Please login first");
@@ -72,51 +73,102 @@ const Cart = () => {
   }, []);
 
 
-  // ==========================
+  
   // REMOVE PRODUCT
-  // ==========================
+  
 
-  const handleRemove = (item) => {
+  const handleRemove = async(item) => {
+    try {
+          const response = await axios.post(
+            import.meta.env.VITE_API_NODEPATH + "/api/cart/deleteproductfromcart",
+            {
+              productId: item.product._id
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
 
-    console.log(
-      "Remove product:",
-      item.product._id
-    );
+            console.log("Updated cart:", response.data);
+
+            // Fetch the latest cart from the database
+            await getCart();
+
+          } 
+    catch (error) {
+            console.error(
+              "Remove Product error:",
+              error.response?.data || error.message
+            );
+        }
 
   };
 
 
-  // ==========================
+  
   // INCREASE
-  // ==========================
-
-  const handleIncrease = (item) => {
-
-    console.log(
-      "Increase:",
-      item.product._id
+  
+const handleIncrease = async (item) => {
+  try {
+    const response = await axios.post(
+      import.meta.env.VITE_API_NODEPATH + "/api/cart/addtocart",
+      {
+        productId: item.product._id,
+        quantity: 1,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
 
-  };
+    console.log("Updated cart:", response.data);
+
+    // Fetch the latest cart from the database
+    await getCart();
+
+  } catch (error) {
+    console.error(
+      "Increase quantity error:",
+      error.response?.data || error.message
+    );
+  }
+};
 
 
-  // ==========================
+  
   // DECREASE
-  // ==========================
+  
 
-  const handleDecrease = (item) => {
+  const handleDecrease = async (item) => {
+  try {
+        await axios.post(
+          import.meta.env.VITE_API_NODEPATH + "/api/cart/removefromcart",
+          { productId: item.product._id },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-    console.log(
-      "Decrease:",
-      item.product._id
-    );
+        await getCart();
+      } 
+      catch (error) {
+        console.error(
+          "Decrease error:",
+          error.response?.data || error.message
+        );
+      }
+};
 
-  };
 
-
-  // ==========================
+  
   // LOADING
-  // ==========================
+  
 
   if (loading) {
 
@@ -129,9 +181,9 @@ const Cart = () => {
   }
 
 
-  // ==========================
+  
   // EMPTY CART
-  // ==========================
+  
 
   if (cartItems.length === 0) {
 
@@ -144,9 +196,9 @@ const Cart = () => {
   }
 
 
-  // ==========================
+  
   // DISPLAY CART
-  // ==========================
+  
 
   return (
 

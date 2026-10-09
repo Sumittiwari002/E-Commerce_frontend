@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Productcard.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -6,6 +6,9 @@ import axios from "axios";
 const Productcard = () => {
   const [data1, setData1] = useState([]);
   const [loadingProduct, setLoadingProduct] = useState(null);
+  // const [message, setMessage] = useState('');
+    const navigate = useNavigate();
+
 
   useEffect(() => {
     axios
@@ -27,7 +30,6 @@ const Productcard = () => {
 
   const handleAddToCart = async (productId) => {
     try {
-      // Get JWT token
       const token = localStorage.getItem("accessToken");
 
       // Check login
@@ -58,10 +60,33 @@ const Productcard = () => {
       if (response.data.success) {
         alert("Product added to cart successfully");
       }
-    } catch (error) {
-      console.error("Add to cart error:", error.message);
+    }
+    
+    catch (error) 
+    {
+      // console.error("Add to cart error:", error);
 
-    } finally {
+      if (error.response) {
+        const message = error.response.data?.message;
+
+        if (error.response.status === 401) {
+          alert(message || "Access token has expired");
+          
+          // Optional: remove expired token
+          localStorage.removeItem("accessToken");
+          
+          // Optional: redirect to login
+          navigate("/login");
+        } else {
+          alert(message || "Something went wrong");
+        }
+      } else if (error.request) {
+        alert("Server is not responding. Please try again.");
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    }
+     finally {
       setLoadingProduct(null);
     }
   };

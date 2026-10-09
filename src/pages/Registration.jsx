@@ -57,47 +57,12 @@ const Registration = () => {
              
             })
             .catch(err=>{
-              // console.log("errr");
               // console.log(err);
               console.log(err.response.data.message);
               setErrmessage(err.response.data.message);
             })
 
-            // try {
-            //   // const payload = {
-            //   //   fields:{
-            //   //     name: {stringValue: values['name']},
-            //   //     mobile: {integerValue: parseInt(values.mobile)},
-            //   //     email: {stringValue: values['email']},
-            //   //     password: {stringValue: values['password']},
-            //   //   }
-            //   // }
-            //   const payload = {
-            //     fields: {
-            //       name: {
-            //         stringValue: values.name,
-            //       },
-            //       mobile: {
-            //         stringValue: values.mobile,
-            //       },
-            //       email: {
-            //         stringValue: values.email,
-            //       },
-            //       password: {
-            //         stringValue: values.password,
-            //       },
-            //     },
-            //   };
-
-            //   console.log(payload);
-
-            //   const response = await firestoreApi.post(`/users`, payload);
-            //   console.log('Product added successfully:', response.data);
-            //   resetForm();
-            // }
-            // catch (error) {
-            //   console.error('Error adding product:', error);
-            // }
+            
           }}
         >
           {({ errors, touched }) => (

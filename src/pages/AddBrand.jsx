@@ -3,6 +3,8 @@ import * as Yup from "yup";
 import "../assets/style/Forms.css";
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 
 const BrandSchema = Yup.object().shape({
   brandName: Yup.string()
@@ -12,6 +14,7 @@ const BrandSchema = Yup.object().shape({
 
 const AddBrand = () => {
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
   return (
     <section className="form-section">
@@ -26,7 +29,7 @@ const AddBrand = () => {
           validationSchema={BrandSchema}
           onSubmit={(values) => {
 
-            console.log(values);
+            // console.log(values);
 
             let token = localStorage.getItem("accessToken");
 
@@ -39,26 +42,16 @@ const AddBrand = () => {
               }
             )
             .then(res=>{
-              // console.log(res.data);
+              console.log(res.data);
               setMessage(res.data.message);
               
             })
             .catch(err=>{
-              // console.log(err.response.data);
-              
+              console.log(err.response.data);
               setMessage(err.response.data.message);
+              alert(err.response.data.message);
+              navigate('/login');
             })
-            
-
-            // console.log(values);
-            // addDocs('brands', values, 'brandName').then(result=>{
-            //   console.log('Brand Added');
-            //   console.log(result);
-
-            //   if(result.status ===200){
-            //     setMessage('Brand Added...')
-            //   }              
-            // })
 
           
           }}

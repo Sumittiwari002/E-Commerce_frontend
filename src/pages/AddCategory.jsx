@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import "../assets/style/Forms.css";
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const CategorySchema = Yup.object().shape({
   categoryName: Yup.string()
@@ -12,6 +13,7 @@ const CategorySchema = Yup.object().shape({
 
 const AddCategory = () => {
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
   return (
     <section className="form-section">
       <div className="form-card">
@@ -47,6 +49,8 @@ const AddCategory = () => {
               console.log(err.response.data);
               // console.log(err.response.data.message);
               setMessage(err.response.data.message);
+              alert(err.response.data.message);
+              navigate("/login");
               
             })
             // console.log(values);

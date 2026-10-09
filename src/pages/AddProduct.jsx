@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import "../assets/style/Forms.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const ProductSchema = Yup.object().shape({
   productName: Yup.string().required("Product name is required"),
@@ -18,6 +19,7 @@ const AddProduct = () => {
 
   const [brands, setBrands] = useState([]);
   const [category, setCategory] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(()=>{
     
@@ -151,29 +153,10 @@ const AddProduct = () => {
                 console.log(err.response);
                 
                 setMessage(err.response.data.message);
+                alert(err.response.data.message);
+                navigate("/login");
                 
-              })
-              // const fileUrl = await uploadFile(selectedFile);
-
-              //     console.log(fileUrl);
-              //     console.log("Upload Successful");
-
-              //     values['image'] = fileUrl;
-              //     console.log(values);
-
-              //     const payload = {
-              //       fields: {
-              //         productBrandId:{stringValue:values['brand']},
-              //         productCategoryId:{stringValue:values['category']},
-              //         productDescription:{stringValue:values['description']},
-              //         productImagePath:{stringValue:values['image']},
-              //         productName:{stringValue:values['productName']},
-              //         productPrice:{stringValue: values['productPrice']},
-              //       }
-              //     };
-              //     console.log(payload);
-              //     const response = await firestoreApi.post(`/products`,payload);
-              //     console.log(response);                
+              })            
                   
                   
             }
