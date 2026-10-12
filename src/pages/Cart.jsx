@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CartProductCard from "../components/Product/Cartproductcard";
-
+import { useNavigate } from "react-router-dom";
 const Cart = () => {
 
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const token = localStorage.getItem("accessToken");
-      console.log("ACCESS TOKEN:", token);
+      // console.log("ACCESS TOKEN:", token);
 
 
   // GET CART
@@ -22,6 +23,7 @@ const Cart = () => {
 
       if (!token) {
         alert("Please login first");
+        navigate("/");
         return;
       }
 
@@ -67,6 +69,24 @@ const Cart = () => {
   
 
   useEffect(() => {
+
+     axios.post(import.meta.env.VITE_API_NODEPATH + "/api/auth/authtoken", {},
+    {
+      headers: 
+      {
+        Authorization:`Bearer ${token}`
+      }
+    }
+   )
+   .then(res=>{
+    console.log(res);
+   })
+   .catch(error=>{
+    console.log(error.message);
+    // alert("Please Login Again");
+    navigate("/");
+    
+   });
 
     getCart();
 

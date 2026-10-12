@@ -4,6 +4,7 @@ import "../assets/style/Forms.css";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const CategorySchema = Yup.object().shape({
   categoryName: Yup.string()
@@ -14,6 +15,29 @@ const CategorySchema = Yup.object().shape({
 const AddCategory = () => {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
+
+    const token = localStorage.getItem("accessToken");
+
+  useEffect(()=>{
+     axios.post(import.meta.env.VITE_API_NODEPATH + "/api/auth/authtoken", {},
+    {
+      headers: 
+      {
+        Authorization:`Bearer ${token}`
+      }
+    }
+   )
+   .then(res=>{
+    console.log(res);
+   })
+   .catch(error=>{
+    console.log(error.message);
+    // alert("Please Login Again");
+    navigate("/");
+    
+   });
+   }, []);
+
   return (
     <section className="form-section">
       <div className="form-card">

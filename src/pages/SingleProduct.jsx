@@ -1,44 +1,60 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom'
-import { getDocs } from '../utilities/crudOperation';
+import axios from 'axios';
 
 export default function SingleProduct() {
     let {productid} = useParams();
     console.log(productid);
     (productid);
     let [record, setrecord] = useState({});
-    let [status, setStatus] = useState(false);
 
     useEffect(()=>{
-        getDocs('products/'+productid).then(response=>{
-            console.log(response);
-            console.log('fetch');
-            setrecord(response.fields);
-            setStatus(true);
-
-        });
+        axios.get(`${import.meta.env.VITE_API_NODEPATH}/api/product/productdetails/${productid}`)
+        .then(res=>{
+            console.log(res.data.product);
+            setrecord(res.data.product);
+        })
+        .catch(err=>{
+            console.error(err);
+        })
     },[productid]);
-  return (
-    <div className='container'>
-        <h1>SingleProduct Data</h1>
-        <hr/>
-          {  status && (
-                <div className='row'>
-                    <div className='col-6'>
-                        <img src={record.productImagePath.stringValue} className='img-fluid'/>
+  
+return (
+  <div className="container py-4">
+    <h1>Product Details</h1>
+    <hr />
 
-                    </div>
-                    <div className='col-6'>
-                        <h4>{record.productName.stringValue}</h4>
-                        <h2>{record.productPrice.integerValue}</h2>
-                        <p>{record.productDescription.stringValue}</p>
-                        <button>Add To Cart</button>
+    {record && (
+      <div className="row">
+        {/* Product Image */}
+        <div className="col-md-6">
+          <img
+            src={`${import.meta.env.VITE_API_NODEPATH}${record.path}`}
+            alt={record.name}
+            className="img-fluid"
+          />
+        </div>
 
-                    </div>
-                </div>
-            )
-        }
-    </div>
-  )
+        {/* Product Information */}
+        <div className="col-md-6">
+          <h2>{record.name}</h2>
+
+          <h3>₹{record.price}</h3>
+
+          <p>{record.description}</p>
+
+          <p>Brand: {record.brandId?.name || "N/A"}</p>
+
+          <p>Category: {record.categoryId?.name || "N/A"}</p>
+
+          <button className="btn btn-primary">
+            Add To Cart
+          </button>
+        </div>
+      </div>
+    )}
+  </div>
+);
+
 }

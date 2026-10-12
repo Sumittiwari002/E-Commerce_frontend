@@ -41,7 +41,7 @@ const Login = () => {
 
               if(res.data.success === true){
                 localStorage.setItem("accessToken", res.data.data.accessToken);
-                navigate("/");
+                navigate("/home");
               }
               
             })

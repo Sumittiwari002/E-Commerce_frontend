@@ -20,18 +20,28 @@ const AddProduct = () => {
   const [brands, setBrands] = useState([]);
   const [category, setCategory] = useState([]);
   const navigate = useNavigate();
+    const token = localStorage.getItem("accessToken");
+
 
   useEffect(()=>{
     
     Promise.all([
       axios.get(import.meta.env.VITE_API_NODEPATH + "/api/brand/allBrands"),
       axios.get(import.meta.env.VITE_API_NODEPATH + "/api/category/allcategories"),
+      axios.post(import.meta.env.VITE_API_NODEPATH + "/api/auth/authtoken", {},
+          {
+            headers: 
+            {
+              Authorization:`Bearer ${token}`
+            }
+          }
+         )
     ])
 
     .then(result => {
       console.log(result);
 
-      let[info1, info2] = result;
+      let[info1, info2, info3] = result;
 
       console.log(info1.data.dataSet);
       console.log(info2.data.dataSet);
@@ -41,6 +51,7 @@ const AddProduct = () => {
     })
     .catch(error =>{
       console.log(error.message);
+      navigate("/");
       
     });
   },[])
