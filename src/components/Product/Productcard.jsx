@@ -90,6 +90,68 @@ const Productcard = () => {
       setLoadingProduct(null);
     }
   };
+    const handleAddToWishlist = async (productId) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+
+      // Check login
+      if (!token) {
+        alert("Please login first");
+        return;
+      }
+
+      // Show loading only for clicked product
+      setLoadingProduct(productId);
+
+      const response = await axios.post(
+        import.meta.env.VITE_API_NODEPATH +
+          "/api/cart/addtowishlist",
+        {
+          productId: productId,
+          quantity: 1,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("Add to Wishlist response:", response.data);
+
+      if (response.data.success) {
+        alert("Product added to Wishlist successfully");
+      }
+    }
+    
+    catch (error) 
+    {
+      // console.error("Add to cart error:", error);
+
+      if (error.response) {
+        const message = error.response.data?.message;
+
+        if (error.response.status === 401) {
+          alert(message || "Access token has expired");
+          
+          // Optional: remove expired token
+          localStorage.removeItem("accessToken");
+          
+          // Optional: redirect to login
+          navigate("/");
+        } else {
+          alert(message || "Something went wrong");
+        }
+      } else if (error.request) {
+        alert("Server is not responding. Please try again.");
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    }
+     finally {
+      setLoadingProduct(null);
+    }
+  };
 
   return (
     <div className="product-grid">
@@ -111,7 +173,7 @@ const Productcard = () => {
                 New
               </span>
 
-              <button className="wishlist-btn">
+              <button className="wishlist-btn" onClick={()=> handleAddToWishlist(productId)}>
                 ♡
               </button>
 

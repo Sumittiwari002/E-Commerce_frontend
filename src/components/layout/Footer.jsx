@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="container">
         <p className="mb-0"
         >
-          © {new Date().getFullYear()} ShopEase. All Rights Reserved.
+          © {new Date().getFullYear()} ShopEase. Where great style meets great value.
         </p>
       </div>
     </footer>

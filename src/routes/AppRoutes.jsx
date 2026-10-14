@@ -14,6 +14,8 @@ import { Provider } from 'react-redux'
 import ecomstore  from "../redux/ecomstore";
 import Registration from "../pages/Registration";
 import ProtectedRoutes from "./ProtectedRoutes";
+import WishlistItems from "../components/Product/WishlistItems";
+// import Wishlist from "../../../back-end/models/Wishlist";
 
 const AppRoutes = () => {
   return (
@@ -29,6 +31,7 @@ const AppRoutes = () => {
               <Route element={<ProtectedRoutes />}>
                   <Route path="/home" element={<Home />} />
                   <Route path="/cart" element={<Cart />} />
+                  <Route path="/wishlist" element={<WishlistItems />} />
                   <Route path="/category/add" element={<AddCategory />} />
                   <Route path="/brand/add" element={<AddBrand />} />
                   <Route path="/product/add" element={<AddProduct />} />

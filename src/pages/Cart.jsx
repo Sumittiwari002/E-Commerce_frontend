@@ -41,9 +41,7 @@ const Cart = () => {
 
       if (response.data.success) {
 
-        setCartItems(
-          response.data.cart.items || []
-        );
+        setCartItems(response.data.cart.items);
 
       }
 
