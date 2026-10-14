@@ -82,14 +82,15 @@ const WishlistItems = () => {
     try {
       setRemovingId(item._id);
 
-      await axios.delete(
-        `${import.meta.env.VITE_API_NODEPATH}/api/cart/removewishlist`,
+      await axios.post(
+        `${import.meta.env.VITE_API_NODEPATH}/api/cart/removefromwishlist`,
+        {
+          productId: productId,
+          quantity: 1,
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
-          },
-          data: {
-            productId,
           },
         }
       );
