@@ -3,55 +3,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react"
 
-// const WishlistItems = ({ item }) => {
-//   const product = item.product;
-
-//   return (
-//     <article className="cart-card">
-
-//       {/* Product Image */}
-//       <div className="cart-image">
-//         <img
-//           src={import.meta.env.VITE_API_NODEPATH + product.path}
-//           alt={product.name}
-//         />
-//       </div>
-
-//       {/* Product Information */}
-//       <div className="cart-content">
-
-//         <h3>{product.name}</h3>
-
-//         <p className="brand">
-//           Brand :{" "}
-//           <span>
-//             {product.brandId?.name || "N/A"}
-//           </span>
-//         </p>
-
-//         <p className="category">
-//           Category :{" "}
-//           <span>
-//             {product.categoryId?.name || "N/A"}
-//           </span>
-//         </p>
-
-//         <p className="price">
-//           ₹ {product.price}
-//         </p>
-
-       
-
-//       </div>
-
-     
-
-//     </article>
-//   );
-// };
-
-// export default WishlistItems;
-
 
 import { Link } from "react-router-dom";
 import "./WishlistItems.css";
