@@ -1,8 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
-
 import Home from "../pages/Home";
 import Cart from "../pages/Cart";
 import Login from "../pages/Login";
@@ -15,7 +13,8 @@ import ecomstore  from "../redux/ecomstore";
 import Registration from "../pages/Registration";
 import ProtectedRoutes from "./ProtectedRoutes";
 import WishlistItems from "../components/Product/WishlistItems";
-// import Wishlist from "../../../back-end/models/Wishlist";
+import Logout from "../pages/Logout";
+
 
 const AppRoutes = () => {
   return (
@@ -36,6 +35,7 @@ const AppRoutes = () => {
                   <Route path="/brand/add" element={<AddBrand />} />
                   <Route path="/product/add" element={<AddProduct />} />
                   <Route path="/productdetails/:productid" element={<SingleProduct />} />
+                  <Route path="/logout" element={<Logout />} />
               </Route>
           </Routes>
         </main>

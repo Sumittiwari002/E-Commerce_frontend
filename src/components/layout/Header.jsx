@@ -22,6 +22,10 @@ const Header = () => {
             </li>
 
             <li>
+              <NavLink to="/wishlist">Wishlist</NavLink>
+            </li>
+
+            <li>
               <NavLink to="/category/add">
                 Add Category
               </NavLink>
@@ -49,6 +53,10 @@ const Header = () => {
               <NavLink to="/newuser">
                 New User?
               </NavLink>
+            </li>
+
+            <li>
+              <NavLink to="/logout">Logout</NavLink>
             </li>
 
           </ul>

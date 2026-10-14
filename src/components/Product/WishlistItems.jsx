@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom";
 
 
 import { Link } from "react-router-dom";
@@ -10,6 +11,7 @@ const WishlistItems = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [removingId, setRemovingId] = useState(null);
+  const navigate = useNavigate();
 
   const token = localStorage.getItem("accessToken");
 
@@ -48,6 +50,23 @@ const WishlistItems = () => {
   };
 
   useEffect(() => {
+     axios.post(import.meta.env.VITE_API_NODEPATH + "/api/auth/authtoken", {},
+        {
+          headers: 
+          {
+            Authorization:`Bearer ${token}`
+          }
+        }
+       )
+       .then(res=>{
+        console.log(res);
+       })
+       .catch(error=>{
+        console.log(error.message);
+        // alert("Please Login Again");
+        navigate("/");
+        
+       });
     fetchWishlist();
   }, []);
 
