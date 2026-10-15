@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { showSuccess } from "../utilities/alert";
+
 
 export default function Logout() {
     const navigate = useNavigate();
@@ -13,7 +15,8 @@ export default function Logout() {
             alert("You are already logged out. Please log in again.");
         } else {
             localStorage.removeItem("accessToken");
-            alert("User logged out successfully.");
+            showSuccess("User Logout successfully");
+
         }
 
         navigate("/", { replace: true });

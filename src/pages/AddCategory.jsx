@@ -5,6 +5,8 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { showSuccess, showError } from "../utilities/alert";
+
 
 const CategorySchema = Yup.object().shape({
   categoryName: Yup.string()
@@ -33,6 +35,7 @@ const AddCategory = () => {
    .catch(error=>{
     console.log(error.message);
     // alert("Please Login Again");
+    showError("Please Login Again");
     navigate("/");
     
    });
@@ -66,27 +69,17 @@ const AddCategory = () => {
             .then(res=>{
               console.log(res);
               setMessage(res.data.message);
+              showSuccess(res.data.message);
               
             })
             .catch(err=>{
-              // console.log(err);
-              console.log(err.response.data);
-              // console.log(err.response.data.message);
+              // console.log(err.response.data);
               setMessage(err.response.data.message);
-              alert(err.response.data.message);
-              navigate("/");
+              // alert(err.response.data.message);
+              showError(err.response.data.message);
               
             })
-            // console.log(values);
-            // addDocs('categories', values, 'categoryName').then(result=>{
-            //   console.log('category Added');
-            //   // console.log(result);
-
-            //   if(result.status ===200){
-            //     console.log('added....')
-            //     setMessage('Category Added...')
-            //   }              
-            // })
+            
           }}
         >
           {({ errors, touched }) => (

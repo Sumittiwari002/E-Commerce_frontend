@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import CartProductCard from "../components/Product/Cartproductcard";
 import { useNavigate } from "react-router-dom";
+import { showSuccess, showError } from "../utilities/alert";
+
 const Cart = () => {
 
   const [cartItems, setCartItems] = useState([]);
@@ -13,14 +15,14 @@ const Cart = () => {
 
 
   // GET CART
-  
 
   const getCart = async () => {
 
     try {
 
       if (!token) {
-        alert("Please login first");
+        // alert("Please login first");
+        showSuccess("Please Login Again");
         navigate("/");
         return;
       }
@@ -81,6 +83,8 @@ const Cart = () => {
    .catch(error=>{
     console.log(error.message);
     // alert("Please Login Again");
+        showSuccess("Please Login Again");
+
     navigate("/");
     
    });
@@ -111,6 +115,8 @@ const Cart = () => {
             console.log("Updated cart:", response.data);
 
             // Fetch the latest cart from the database
+            showSuccess("Product Removed from cart");
+
             await getCart();
 
           } 
@@ -146,12 +152,11 @@ const handleIncrease = async (item) => {
 
     // Fetch the latest cart from the database
     await getCart();
+    showSuccess("Product quantity increased successfully!");
 
   } catch (error) {
-    console.error(
-      "Increase quantity error:",
-      error.response?.data || error.message
-    );
+    console.error("Increase quantity error:",error.response?.data || error.message);
+    showError(error.response?.data?.message ||"Unable to update your cart. Please try again.");
   }
 };
 
@@ -173,12 +178,11 @@ const handleIncrease = async (item) => {
         );
 
         await getCart();
+        showSuccess("Product quantity decreased successfully!");
       } 
       catch (error) {
-        console.error(
-          "Decrease error:",
-          error.response?.data || error.message
-        );
+        console.error("Decrease error:",error.response?.data || error.message);
+        showError(error.response?.data?.message ||"Unable to update your cart. Please try again.");
       }
 };
 

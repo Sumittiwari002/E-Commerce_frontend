@@ -5,6 +5,8 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { showSuccess, showError } from "../utilities/alert";
+
 
 
 const BrandSchema = Yup.object().shape({
@@ -32,7 +34,7 @@ const AddBrand = () => {
    })
    .catch(error=>{
     console.log(error.message);
-    // alert("Please Login Again");
+    showError("please Login Again");
     navigate("/");
     
    });
@@ -66,14 +68,14 @@ const AddBrand = () => {
             )
             .then(res=>{
               console.log(res.data);
+              showSuccess(res.data.message);
               setMessage(res.data.message);
               
             })
             .catch(err=>{
               console.log(err.response.data);
               setMessage(err.response.data.message);
-              alert(err.response.data.message);
-              navigate('/');
+              showError(err.response.data.message);
             })
 
           

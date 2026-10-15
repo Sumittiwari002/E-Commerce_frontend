@@ -4,6 +4,8 @@ import "../assets/style/Forms.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { showSuccess, showError } from "../utilities/alert";
+
 
 const ProductSchema = Yup.object().shape({
   productName: Yup.string().required("Product name is required"),
@@ -51,6 +53,7 @@ const AddProduct = () => {
     })
     .catch(error =>{
       console.log(error.message);
+      showError(error.message);
       navigate("/");
       
     });
@@ -122,17 +125,16 @@ const AddProduct = () => {
               )
               .then(res =>{
                 console.log(res.data);
-                alert("Product Added Successfully");
-                setMessage("Product Added");
+                showSuccess("Product Added Successfully");
+                setMessage("Product Added Successfully");
                 
               })
               .catch(err=>{
                 console.log(err.response);
                 
                 setMessage(err.response.data.message);
-                alert(err.response.data.message);
-                navigate("/");
-                
+                showError(err.response.data.message);
+
               })            
                   
                   
@@ -140,6 +142,7 @@ const AddProduct = () => {
             catch(error){
               console.log(error);
               console.log("Upload Failed");
+              showError("Upload Failed");
               
               
             }
@@ -162,27 +165,23 @@ const AddProduct = () => {
               </div>
 
               <div className="form-group">
-                <label>Product Price</label>
+                  <label>Product Price</label>
 
-                <Field
-                  name="productPrice"
-                  type="number"
-                  className="form-control"
-                />
+                  <Field
+                    name="productPrice"
+                    type="number"
+                    className="form-control"
+                  />
 
-                {errors.productPrice && touched.productPrice && (
-                  <div className="error">{errors.productPrice}</div>
-                )}
+                  {errors.productPrice && touched.productPrice && (
+                    <div className="error">{errors.productPrice}</div>
+                  )}
               </div>
 
               <div className="form-group">
                 <label>Category</label>
 
-                <Field
-                  as="select"
-                  name="category"
-                  className="form-control"
-                >
+                <Field as="select" name="category" className="form-control" >
                   <option value="">Select Category</option>
                   {category.map((item) => (
                     

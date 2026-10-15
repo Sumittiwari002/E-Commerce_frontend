@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import "../components/login/signupform.css";
 import axios from "axios";
 import { useState } from "react";
-// import firestoreApi from "../settings/apiSetting";
+import { showSuccess, showError } from "../utilities/alert";
+
 
 const Registration = () => {
 
@@ -53,12 +54,18 @@ const Registration = () => {
             axios.post(import.meta.env.VITE_API_NODEPATH + "/api/auth/register" ,values)
             .then(res=>{
               console.log(res.data);
+              showSuccess("User Registration is successfull");
+
               setErrmessage(res.data.message);             
              
             })
             .catch(err=>{
               // console.log(err);
               console.log(err.response.data.message);
+              showError(
+            err.response?.data?.message ||
+            "Unable to Register the user. Please try again."
+        );
               setErrmessage(err.response.data.message);
             })
 
