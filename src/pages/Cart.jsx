@@ -19,8 +19,6 @@ const Cart = () => {
 
     try {
 
-      
-
       if (!token) {
         alert("Please login first");
         navigate("/");
@@ -41,6 +39,7 @@ const Cart = () => {
 
       if (response.data.success) {
 
+        console.log(response.data.cart.items);
         setCartItems(response.data.cart.items);
 
       }

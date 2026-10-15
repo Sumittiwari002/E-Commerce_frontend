@@ -41,7 +41,7 @@ const AddProduct = () => {
     .then(result => {
       console.log(result);
 
-      let[info1, info2, info3] = result;
+      let[info1, info2] = result;
 
       console.log(info1.data.dataSet);
       console.log(info2.data.dataSet);
@@ -54,28 +54,10 @@ const AddProduct = () => {
       navigate("/");
       
     });
-  },[])
-
-
-  // let data1 = useFetch("categories");
-  // let[data1,setData1] = useState([]);
-  //   useEffect(()=>{
-  //       getDocs('categories').then((response) =>{
-  //           console.log(response.documents);
-  //           setData1(response.documents);
-  //       })
-  //   },[]);
+  },[]);
 
     let [message, setMessage] = useState();
 
-  // let data2 = useFetch("brands");
-  // let[data2,setData2] = useState([]);
-  //   useEffect(()=>{
-  //       getDocs('brands').then((response) =>{
-  //           console.log(response.documents);
-  //           setData2(response.documents);
-  //       })
-  //   },[]);
 
 
     function myfunc(ev){
@@ -86,23 +68,6 @@ const AddProduct = () => {
       setSelectedFile(ev.target.files[0])
 
     }
-
-    // async function uploadFile(fileOjbect) {
-    //   console.log("Upload Here");
-    //   console.log(fileOjbect);
-
-    //   const fileName = `${Date.now()}-${fileOjbect.name}`;
-
-    //   const command = new PutObjectCommand({
-    //     Bucket: "e-comm-s3-firebase-project",
-    //     Key: fileName,               // The name the file will have in S3
-    //     Body: fileOjbect,            // The actual file blob/buffer/stream
-    //     ContentType: fileOjbect.type // Helps browser open file instead of downloading
-    //   });
-    //   await s3Client.send(command);
-    //   setMessage("Product Added...")
-    //   return `https://e-comm-s3-firebase-project.s3.us-east-1.amazonaws.com/${fileName}`;
-    // }
 
   return (
     <section className="form-section">
@@ -157,6 +122,7 @@ const AddProduct = () => {
               )
               .then(res =>{
                 console.log(res.data);
+                alert("Product Added Successfully");
                 setMessage("Product Added");
                 
               })

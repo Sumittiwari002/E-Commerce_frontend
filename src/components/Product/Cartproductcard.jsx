@@ -9,7 +9,7 @@ const CartProductCard = ({ item, onRemove, onIncrease, onDecrease }) => {
       {/* Product Image */}
       <div className="cart-image">
         <img
-          src={import.meta.env.VITE_API_NODEPATH + product.path}
+          src={product.path}
           alt={product.name}
         />
       </div>

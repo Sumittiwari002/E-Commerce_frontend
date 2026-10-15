@@ -31,7 +31,8 @@ const Productcard = () => {
   const handleAddToCart = async (productId) => {
     try {
       const token = localStorage.getItem("accessToken");
-
+      console.log(productId);
+        
       // Check login
       if (!token) {
         alert("Please login first");
@@ -93,6 +94,7 @@ const Productcard = () => {
     const handleAddToWishlist = async (productId) => {
     try {
       const token = localStorage.getItem("accessToken");
+      
 
       // Check login
       if (!token) {
@@ -169,19 +171,16 @@ const Productcard = () => {
             {/* Image Section */}
             <div className="product-image">
 
-              <span className="product-badge">
+              {/* <span className="product-badge">
                 New
-              </span>
+              </span> */}
 
               <button className="wishlist-btn" onClick={()=> handleAddToWishlist(productId)}>
                 ♡
               </button>
 
               <img
-                src={
-                  import.meta.env.VITE_API_NODEPATH +
-                  item.path
-                }
+                src={item.path}
                 alt={item.name}
               />
 

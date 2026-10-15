@@ -51,6 +51,32 @@
     color:#fff;
 }
 
+.username-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    color: #333;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    background-color: #f1f5f9;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.username-link:hover {
+    color: #0d6efd;
+    background-color: #e2e8f0;
+}
+
+.username-link span {
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 /* Responsive */
 
 @media(max-width:768px){

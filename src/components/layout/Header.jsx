@@ -1,13 +1,36 @@
 import { NavLink } from "react-router-dom";
 import "./Header.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Header = () => {
+
+  const token = localStorage.getItem("accessToken");
+  const [name, setName] = useState();
+
+  useEffect(()=>{
+
+    axios.get(import.meta.env.VITE_API_NODEPATH + "/api/user/profile", {
+      headers:{
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then(res=>{
+      console.log(res.data.data.user.name);
+      setName(res.data.data.user.name);
+    })
+    .catch(err=>{
+      console.error(err);
+    })
+
+  },[]);
+
   return (
     <header className="site-header">
       <div className="container header-wrapper">
 
         <div className="logo">
-          <NavLink to="/">ShopEase</NavLink>
+          <NavLink to="/home">ShopEase</NavLink>
         </div>
 
         <nav aria-label="Main Navigation">
@@ -49,9 +72,10 @@ const Header = () => {
               </NavLink>
             </li>
 
-            <li>
-              <NavLink to="/newuser">
-                New User?
+            <li className="nav-item">
+              <NavLink to="/newuser" className="username-link">
+                <i className="bi bi-person-circle"></i>
+                <span>{name }</span>
               </NavLink>
             </li>
 

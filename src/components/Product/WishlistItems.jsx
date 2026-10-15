@@ -251,16 +251,6 @@ const WishlistItems = () => {
                     </div>
                   )}
 
-                  <button
-                    type="button"
-                    className="wishlist-remove-icon"
-                    onClick={() => handleRemove(item)}
-                    disabled={removingId === item._id}
-                    aria-label={`Remove ${product.name} from wishlist`}
-                    title="Remove from wishlist"
-                  >
-                    {removingId === item._id ? "..." : "×"}
-                  </button>
                 </div>
 
                 {/* Product Details */}
@@ -274,10 +264,6 @@ const WishlistItems = () => {
                     {Number(product.price || 0).toLocaleString(
                       "en-IN"
                     )}
-                  </p>
-
-                  <p className="wishlist-quantity">
-                    Saved quantity: <strong>{item.quantity}</strong>
                   </p>
 
                   <div className="wishlist-card-actions">
@@ -307,7 +293,7 @@ const WishlistItems = () => {
         </div>
 
         <div className="wishlist-footer">
-          <Link to="/" className="wishlist-continue-shopping">
+          <Link to="/home" className="wishlist-continue-shopping">
             ← Continue Shopping
           </Link>
         </div>
