@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../settings/axiosInstance";
 import CartProductCard from "../components/Product/Cartproductcard";
 import { useNavigate } from "react-router-dom";
 import { showSuccess, showError } from "../utilities/alert";
@@ -27,14 +27,7 @@ const Cart = () => {
         return;
       }
 
-      const response = await axios.get(
-        import.meta.env.VITE_API_NODEPATH +
-        "/api/cart/getcart",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const response = await api.get("/api/cart/getcart"
       );
 
       console.log("Cart response:", response.data);
@@ -48,14 +41,9 @@ const Cart = () => {
 
     } catch (error) {
 
-      console.error(
-        "Get cart error:",
-        error
-      );
+      console.error("Get cart error:",error);
 
-      console.error(
-        error.response?.data
-      );
+      console.error(error.response?.data);
 
     } finally {
 
@@ -69,13 +57,7 @@ const Cart = () => {
 
   useEffect(() => {
 
-     axios.post(import.meta.env.VITE_API_NODEPATH + "/api/auth/authtoken", {},
-    {
-      headers: 
-      {
-        Authorization:`Bearer ${token}`
-      }
-    }
+     api.post("/api/auth/authtoken", {}
    )
    .then(res=>{
     console.log(res);
@@ -100,15 +82,9 @@ const Cart = () => {
 
   const handleRemove = async(item) => {
     try {
-          const response = await axios.post(
-            import.meta.env.VITE_API_NODEPATH + "/api/cart/deleteproductfromcart",
+          const response = await api.post("/api/cart/deleteproductfromcart",
             {
               productId: item.product._id
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
             }
           );
 
@@ -135,16 +111,10 @@ const Cart = () => {
   
 const handleIncrease = async (item) => {
   try {
-    const response = await axios.post(
-      import.meta.env.VITE_API_NODEPATH + "/api/cart/addtocart",
+    const response = await api.post("/api/cart/addtocart",
       {
         productId: item.product._id,
         quantity: 1,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       }
     );
 
@@ -167,14 +137,8 @@ const handleIncrease = async (item) => {
 
   const handleDecrease = async (item) => {
   try {
-        await axios.post(
-          import.meta.env.VITE_API_NODEPATH + "/api/cart/removefromcart",
-          { productId: item.product._id },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+        await api.post("/api/cart/removefromcart",
+          { productId: item.product._id }
         );
 
         await getCart();

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import "./Productfilter.css";
-import axios from "axios";
+import api from "../../settings/axiosInstance";
 
 const Brandfilter = () => {
     let[data,setData] = useState([]);
     useEffect(()=>{
 
-        axios.get(import.meta.env.VITE_API_NODEPATH + "/api/brand/allBrands")
+        api.get("/api/brand/allBrands")
         .then(res=>{
           console.log(res.data.dataSet);
           setData(res.data.dataSet);

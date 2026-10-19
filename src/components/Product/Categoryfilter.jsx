@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import "./Productfilter.css";
 import {useDispatch} from 'react-redux'
 import { shareCategroyId } from "../../redux/slices/categorySlice";
-import axios from "axios";
+import api from "../../settings/axiosInstance";
 
 const Categoryfilter = () => {
 
   let [data, setData] = useState([]);
 
   useEffect(()=>{
-    axios.get(import.meta.env.VITE_API_NODEPATH + "/api/category/allcategories")
+    api.get("/api/category/allcategories")
     .then(res=>{
       console.log(res.data.dataSet);
       setData(res.data.dataSet);

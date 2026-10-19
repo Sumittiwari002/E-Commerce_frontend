@@ -1,7 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./Productcard.css";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../settings/axiosInstance";
+import { showSuccess, showError } from "../../utilities/alert";
+
 
 const Productcard = () => {
   const [data1, setData1] = useState([]);
@@ -11,10 +13,8 @@ const Productcard = () => {
 
 
   useEffect(() => {
-    axios
-      .get(
-        import.meta.env.VITE_API_NODEPATH +
-          "/api/product/allProducts"
+    api
+      .get("/api/product/allProducts"
       )
       .then((res) => {
         console.log(res.data);
@@ -35,31 +35,25 @@ const Productcard = () => {
         
       // Check login
       if (!token) {
-        alert("Please login first");
+        // alert("Please login first");
+        showError("Please Login First");
         return;
       }
 
       // Show loading only for clicked product
       setLoadingProduct(productId);
 
-      const response = await axios.post(
-        import.meta.env.VITE_API_NODEPATH +
-          "/api/cart/addtocart",
+      const response = await api.post("/api/cart/addtocart",
         {
           productId: productId,
           quantity: 1,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         }
       );
 
       console.log("Add to cart response:", response.data);
 
       if (response.data.success) {
-        alert("Product added to cart successfully");
+        showSuccess("Product added to cart successfully");
       }
     }
     
@@ -71,7 +65,7 @@ const Productcard = () => {
         const message = error.response.data?.message;
 
         if (error.response.status === 401) {
-          alert(message || "Access token has expired");
+          showError(message || "Access token has expired")
           
           // Optional: remove expired token
           localStorage.removeItem("accessToken");
@@ -79,12 +73,13 @@ const Productcard = () => {
           // Optional: redirect to login
           navigate("/");
         } else {
-          alert(message || "Something went wrong");
+          showError(message || "Something went wrong");
         }
       } else if (error.request) {
-        alert("Server is not responding. Please try again.");
+        showError("Server is not responding. Please try again.");
+
       } else {
-        alert("Something went wrong. Please try again.");
+        showError("Something went wrong. Please try again.");
       }
     }
      finally {
@@ -98,31 +93,24 @@ const Productcard = () => {
 
       // Check login
       if (!token) {
-        alert("Please login first");
+        showError("Please Login First");
         return;
       }
 
       // Show loading only for clicked product
       setLoadingProduct(productId);
 
-      const response = await axios.post(
-        import.meta.env.VITE_API_NODEPATH +
-          "/api/cart/addtowishlist",
+      const response = await api.post("/api/cart/addtowishlist",
         {
           productId: productId,
           quantity: 1,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         }
       );
 
       console.log("Add to Wishlist response:", response.data);
 
       if (response.data.success) {
-        alert("Product added to Wishlist successfully");
+        showSuccess("Product added to Wishlist successfully");
       }
     }
     
@@ -134,7 +122,7 @@ const Productcard = () => {
         const message = error.response.data?.message;
 
         if (error.response.status === 401) {
-          alert(message || "Access token has expired");
+          showError(message || "Access token has expired");
           
           // Optional: remove expired token
           localStorage.removeItem("accessToken");
@@ -142,12 +130,12 @@ const Productcard = () => {
           // Optional: redirect to login
           navigate("/");
         } else {
-          alert(message || "Something went wrong");
+          showError(message || "Something went wrong");
         }
       } else if (error.request) {
-        alert("Server is not responding. Please try again.");
+        showError("Server is not responding. Please try again.");
       } else {
-        alert("Something went wrong. Please try again.");
+        showError("Something went wrong. Please try again.");
       }
     }
      finally {

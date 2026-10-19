@@ -14,11 +14,14 @@ import Registration from "../pages/Registration";
 import ProtectedRoutes from "./ProtectedRoutes";
 import WishlistItems from "../components/Product/WishlistItems";
 import Logout from "../pages/Logout";
+import AdminRoutes from "./AdminRoutes";
+import { AuthProvider } from "../context/AuthContext";
 
 
 const AppRoutes = () => {
   return (
     <BrowserRouter>
+    <AuthProvider>
     <Provider store={ecomstore}>
       <Header />
 
@@ -31,17 +34,22 @@ const AppRoutes = () => {
                   <Route path="/home" element={<Home />} />
                   <Route path="/cart" element={<Cart />} />
                   <Route path="/wishlist" element={<WishlistItems />} />
-                  <Route path="/category/add" element={<AddCategory />} />
-                  <Route path="/brand/add" element={<AddBrand />} />
-                  <Route path="/product/add" element={<AddProduct />} />
                   <Route path="/productdetails/:productid" element={<SingleProduct />} />
                   <Route path="/logout" element={<Logout />} />
+
+                  {/* Admin only */}
+                  <Route element={<AdminRoutes />}>
+                      <Route path="/category/add" element={<AddCategory />} />
+                      <Route path="/brand/add" element={<AddBrand />} />
+                      <Route path="/product/add" element={<AddProduct />} />
+                  </Route>
               </Route>
           </Routes>
         </main>
 
       <Footer />
       </Provider>
+    </AuthProvider>
     </BrowserRouter>
   );
 };

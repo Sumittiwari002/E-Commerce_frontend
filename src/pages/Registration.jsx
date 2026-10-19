@@ -163,7 +163,7 @@ const Registration = () => {
 
         <div className="auth-footer">
           Already have an account?{" "}
-          <Link to="/login">Login</Link>
+          <Link to="/">Login</Link>
         </div>
       </div>
     </section>

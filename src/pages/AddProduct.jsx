@@ -2,7 +2,7 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import "../assets/style/Forms.css";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../settings/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { showSuccess, showError } from "../utilities/alert";
 
@@ -28,15 +28,9 @@ const AddProduct = () => {
   useEffect(()=>{
     
     Promise.all([
-      axios.get(import.meta.env.VITE_API_NODEPATH + "/api/brand/allBrands"),
-      axios.get(import.meta.env.VITE_API_NODEPATH + "/api/category/allcategories"),
-      axios.post(import.meta.env.VITE_API_NODEPATH + "/api/auth/authtoken", {},
-          {
-            headers: 
-            {
-              Authorization:`Bearer ${token}`
-            }
-          }
+      api.get("/api/brand/allBrands"),
+      api.get("/api/category/allcategories"),
+      api.post("/api/auth/authtoken", {}
          )
     ])
 
@@ -116,12 +110,7 @@ const AddProduct = () => {
 
               let token = localStorage.getItem("accessToken");
 
-              axios.post(import.meta.env.VITE_API_NODEPATH + "/api/product/product-action", formData,
-                {
-                  headers:{
-                    Authorization: `Bearer ${token}`
-                  }
-                }
+              api.post("/api/product/product-action", formData
               )
               .then(res =>{
                 console.log(res.data);

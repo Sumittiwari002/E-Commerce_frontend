@@ -2,7 +2,7 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import "../assets/style/Forms.css";
 import { useState } from "react";
-import axios from "axios";
+import api from "../settings/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { showSuccess, showError } from "../utilities/alert";
@@ -21,13 +21,7 @@ const AddBrand = () => {
     const token = localStorage.getItem("accessToken");
 
     useEffect(()=>{
-     axios.post(import.meta.env.VITE_API_NODEPATH + "/api/auth/authtoken", {},
-    {
-      headers: 
-      {
-        Authorization:`Bearer ${token}`
-      }
-    }
+     api.post("/api/auth/authtoken", {}
    )
    .then(res=>{
     console.log(res);
@@ -58,13 +52,7 @@ const AddBrand = () => {
 
             let token = localStorage.getItem("accessToken");
 
-            axios.post(import.meta.env.VITE_API_NODEPATH + "/api/brand/brand-action", {name:values.brandName}, 
-              {
-                headers: 
-                {
-                  Authorization: `Bearer ${token}`
-                }
-              }
+            api.post("/api/brand/brand-action", {name:values.brandName}
             )
             .then(res=>{
               console.log(res.data);

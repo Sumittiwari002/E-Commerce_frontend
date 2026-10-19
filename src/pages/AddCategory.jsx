@@ -2,7 +2,7 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import "../assets/style/Forms.css";
 import { useState } from "react";
-import axios from "axios";
+import api from "../settings/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { showSuccess, showError } from "../utilities/alert";
@@ -21,13 +21,7 @@ const AddCategory = () => {
     const token = localStorage.getItem("accessToken");
 
   useEffect(()=>{
-     axios.post(import.meta.env.VITE_API_NODEPATH + "/api/auth/authtoken", {},
-    {
-      headers: 
-      {
-        Authorization:`Bearer ${token}`
-      }
-    }
+     api.post("/api/auth/authtoken", {}
    )
    .then(res=>{
     console.log(res);
@@ -60,12 +54,7 @@ const AddCategory = () => {
             console.log(token);
             
 
-            axios.post(import.meta.env.VITE_API_NODEPATH + "/api/category/category-action", {name:values.categoryName}, 
-              {
-                headers: {
-                  Authorization :`Bearer ${token}`
-                }
-              })
+            api.post("/api/category/category-action", {name:values.categoryName})
             .then(res=>{
               console.log(res);
               setMessage(res.data.message);

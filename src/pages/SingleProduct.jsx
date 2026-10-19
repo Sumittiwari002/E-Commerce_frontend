@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import axios from "axios";
+import api from "../settings/axiosInstance";
 
 export default function SingleProduct() {
   const { productid } = useParams();
@@ -10,8 +10,8 @@ export default function SingleProduct() {
 
   useEffect(() => {
 
-    axios
-      .get(`${import.meta.env.VITE_API_NODEPATH}/api/product/productdetails/${productid}`)
+    api
+      .get(`/api/product/productdetails/${productid}`)
       .then((res) => {
         setRecord(res.data.product);
       })
@@ -80,7 +80,7 @@ export default function SingleProduct() {
                 )}
 
                 <img
-                  src={`${import.meta.env.VITE_API_NODEPATH}${record.path}`}
+                  src={`${record.path}`}
                   alt={record.name || "Product"}
                   className="img-fluid"
                   style={{

@@ -5,12 +5,14 @@ import "../components/login/signupform.css";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 
 const Login = () => {
 
   const [errmessage, setErrmessage] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth();
   const LoginSchema = Yup.object({
     email: Yup.string()
       .email("Invalid email")
@@ -35,13 +37,14 @@ const Login = () => {
           onSubmit={(values) => {
             console.log("Login Data:", values);
 
+            
             axios.post(import.meta.env.VITE_API_NODEPATH + "/api/auth/login", values)
             .then(res=>{
               console.log(res.data);
               setErrmessage(res.data.message);
 
               if(res.data.success === true){
-                localStorage.setItem("accessToken", res.data.data.accessToken);
+                login(res.data.data.accessToken, res.data.data.user);
                 navigate("/home");
               }
               

@@ -2,7 +2,7 @@ import Categoryfilter from "../components/Product/Categoryfilter";
 import Brandfilter from "../components/Product/Brandfilter";
 import Productcard from "../components/Product/Productcard";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../settings/axiosInstance";
 import { useEffect } from "react";
 
 const Home = () => {
@@ -15,13 +15,7 @@ const Home = () => {
 
   
    useEffect(()=>{
-     axios.post(import.meta.env.VITE_API_NODEPATH + "/api/auth/authtoken", {},
-    {
-      headers: 
-      {
-        Authorization:`Bearer ${token}`
-      }
-    }
+     api.post("/api/auth/authtoken", {}
    )
    .then(res=>{
     console.log(res);

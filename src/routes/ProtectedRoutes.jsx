@@ -1,10 +1,11 @@
 import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
+// Any logged-in user (admin or normal user)
 const ProtectedRoutes = () => {
-    // alert("Please Login First");
-  const token = localStorage.getItem("accessToken");
+  const { isAuthenticated } = useAuth();
 
-  if (!token) {
+  if (!isAuthenticated) {
     return <Navigate to="/" replace />;
   }
 

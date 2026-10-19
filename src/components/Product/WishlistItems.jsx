@@ -1,7 +1,7 @@
-import axios from "axios";
+import api from "../../settings/axiosInstance";
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
-
+import {  showError } from "../../utilities/alert";
 
 import { Link } from "react-router-dom";
 import "./WishlistItems.css";
@@ -18,7 +18,8 @@ const WishlistItems = () => {
   // Fetch wishlist items
   const fetchWishlist = async () => {
     if (!token) {
-      setError("Please log in to view your wishlist.");
+      setError("Please log in to view your wishlist");
+      showError("Please log in to view your wishlist");
       setLoading(false);
       return;
     }
@@ -27,36 +28,22 @@ const WishlistItems = () => {
       setLoading(true);
       setError("");
 
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_NODEPATH}/api/cart/getwishlist`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const response = await api.get(`/api/cart/getwishlist`
       );
 
       setWishlist(response.data?.wishlist?.items || []);
     } catch (err) {
       console.error("Wishlist fetch error:", err);
 
-      setError(
-        err.response?.data?.message ||
-          "Unable to load your wishlist. Please try again."
-      );
+      setError(err.response?.data?.message ||"Unable to load your wishlist. Please try again.");
+      showError(err.response?.data?.message ||"Unable to load your wishlist. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-     axios.post(import.meta.env.VITE_API_NODEPATH + "/api/auth/authtoken", {},
-        {
-          headers: 
-          {
-            Authorization:`Bearer ${token}`
-          }
-        }
+     api.post("/api/auth/authtoken", {}
        )
        .then(res=>{
         console.log(res);
@@ -75,23 +62,18 @@ const WishlistItems = () => {
     const productId = item.product?._id;
 
     if (!productId) {
-      setError("Unable to identify this product.");
+      setError("Unable to identify this product");
+      showError("Unable to identify this product");
       return;
     }
 
     try {
       setRemovingId(item._id);
 
-      await axios.post(
-        `${import.meta.env.VITE_API_NODEPATH}/api/cart/removefromwishlist`,
+      await api.post(`/api/cart/removefromwishlist`,
         {
           productId: productId,
           quantity: 1,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         }
       );
 
@@ -124,16 +106,10 @@ const WishlistItems = () => {
     try {
       setError("");
 
-      await axios.post(
-        `${import.meta.env.VITE_API_NODEPATH}/api/cart/addtocart`,
+      await api.post(`/api/cart/addtocart`,
         {
           productId,
           quantity: 1,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         }
       );
 
