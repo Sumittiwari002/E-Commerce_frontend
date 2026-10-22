@@ -22,6 +22,7 @@ const Home = () => {
    })
    .catch(error=>{
     console.log(error.message);
+  
     // alert("Please Login Again");
     navigate("/");
     

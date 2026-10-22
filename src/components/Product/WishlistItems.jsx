@@ -28,8 +28,7 @@ const WishlistItems = () => {
       setLoading(true);
       setError("");
 
-      const response = await api.get(`/api/cart/getwishlist`
-      );
+      const response = await api.get(`/api/cart/getwishlist`);
 
       setWishlist(response.data?.wishlist?.items || []);
     } catch (err) {

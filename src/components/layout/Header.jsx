@@ -16,7 +16,6 @@ const Header = () => {
         <nav aria-label="Main Navigation">
           <ul className="nav-links">
 
-            {/* Not logged in: only Login and Register */}
             {!isAuthenticated && (
               <>
                 <li>
@@ -46,10 +45,12 @@ const Header = () => {
               </>
             )}
 
-            {/* Admin only */}
             {isAdmin && (
               <>
                 <li>
+                  <NavLink to="/admin">Dashboard</NavLink>
+                </li>
+                {/* <li>
                   <NavLink to="/category/add">Add Category</NavLink>
                 </li>
 
@@ -59,7 +60,7 @@ const Header = () => {
 
                 <li>
                   <NavLink to="/product/add">Add Product</NavLink>
-                </li>
+                </li> */}
               </>
             )}
 

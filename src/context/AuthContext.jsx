@@ -4,7 +4,7 @@ import axios from "axios";
 
 const TOKEN_KEY = "accessToken";
 
-// Backend stores the role in User.status  ->  1 = admin, 0 = normal user
+// Backend stores the role in User.status
 const ADMIN_STATUS = 1;
 
 const AuthContext = createContext(null);
@@ -87,3 +87,91 @@ export const useAuth = () => {
   if (!ctx) throw new Error("useAuth must be used inside <AuthProvider>");
   return ctx;
 };
+
+
+// import { createContext, useCallback, useContext, useEffect, useState } from "react";
+// import api, { refreshSession, TOKEN_KEY } from "../utilities/api";
+
+// const ADMIN_STATUS = 1;
+// const AuthContext = createContext(null);
+
+// export const AuthProvider = ({ children }) => {
+//   const [token, setToken] = useState(() => localStorage.getItem(TOKEN_KEY));
+//   const [user, setUser] = useState(null);
+//   const [loading, setLoading] = useState(!!localStorage.getItem(TOKEN_KEY));
+
+//   // On page load: silently refresh so we get a valid token + the user/role
+//   useEffect(() => {
+//     if (!localStorage.getItem(TOKEN_KEY)) {
+//       setLoading(false);
+//       return;
+//     }
+
+//     let cancelled = false;
+
+//     refreshSession()
+//       .then(({ accessToken, user }) => {
+//         if (cancelled) return;
+//         setToken(accessToken);
+//         setUser(user);
+//       })
+//       .catch(() => {
+//         if (cancelled) return;
+//         setToken(null);
+//         setUser(null);
+//       })
+//       .finally(() => {
+//         if (!cancelled) setLoading(false);
+//       });
+
+//     return () => {
+//       cancelled = true;
+//     };
+//   }, []);
+
+//   // Interceptor fires this when the refresh token itself is dead
+//   useEffect(() => {
+//     const onForcedLogout = () => {
+//       setToken(null);
+//       setUser(null);
+//     };
+//     window.addEventListener("auth:logout", onForcedLogout);
+//     return () => window.removeEventListener("auth:logout", onForcedLogout);
+//   }, []);
+
+//   const login = useCallback((accessToken, loggedInUser) => {
+//     localStorage.setItem(TOKEN_KEY, accessToken);
+//     setToken(accessToken);
+//     setUser(loggedInUser ?? null);
+//     setLoading(false);
+//   }, []);
+
+//   const logout = useCallback(async () => {
+//     try {
+//       await api.post("/api/auth/logout"); // clears cookie + Redis session (if you have this route)
+//     } catch {
+//       /* ignore */
+//     }
+//     localStorage.removeItem(TOKEN_KEY);
+//     setToken(null);
+//     setUser(null);
+//   }, []);
+
+//   const value = {
+//     user,
+//     isAuthenticated: !!token,
+//     isAdmin: user?.status === ADMIN_STATUS,
+//     loading,
+//     login,
+//     logout,
+//   };
+
+//   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+// };
+
+// // eslint-disable-next-line react-refresh/only-export-components
+// export const useAuth = () => {
+//   const ctx = useContext(AuthContext);
+//   if (!ctx) throw new Error("useAuth must be used inside <AuthProvider>");
+//   return ctx;
+// };

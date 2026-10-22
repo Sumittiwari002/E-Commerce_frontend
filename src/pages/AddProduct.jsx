@@ -22,7 +22,7 @@ const AddProduct = () => {
   const [brands, setBrands] = useState([]);
   const [category, setCategory] = useState([]);
   const navigate = useNavigate();
-    const token = localStorage.getItem("accessToken");
+    // const token = localStorage.getItem("accessToken");
 
 
   useEffect(()=>{
@@ -108,7 +108,7 @@ const AddProduct = () => {
               formData.append('categoryId', values.category);
               formData.append('brandId', values.brand);
 
-              let token = localStorage.getItem("accessToken");
+              // let token = localStorage.getItem("accessToken");
 
               api.post("/api/product/product-action", formData
               )
