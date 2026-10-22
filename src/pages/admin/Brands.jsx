@@ -3,43 +3,73 @@ import { useEffect, useState } from "react";
 import "../../components/Product/Productcard.css";
 import api from "../../settings/axiosInstance";
 import { showSuccess } from "../../utilities/alert";
+import { useNavigate } from "react-router-dom";
 
 
-const Brands = () => {
-  const [data, setData] = useState([]);
-  const [selectedBrand, setSelectedBrand] = useState(null);
-  const [loading, setLoading] = useState(true);
+const Brands = () => 
+{
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
-  const token = localStorage.getItem("accessToken");
+//   const token = localStorage.getItem("accessToken");
+ const fetchBrand = async () =>
+    {
+        try{
+            await api.get("/api/brand/allBrands")
+            .then((res) => {
+                setData(res.data.dataSet);
+            })
+            .catch((err) => {
+                console.error("Brand fetch error:", err);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+        }
+        catch(err){
+            console.error(err.message);
+        }
+    }
 
   useEffect(() => {
-    api
-      .get("/api/brand/allBrands")
-      .then((res) => {
-        setData(res.data.dataSet || []);
-      })
-      .catch((err) => {
-        console.error("Brand fetch error:", err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    api.post("/api/auth/authtoken", {})
+           .then(res=>{
+            console.log(res);
+           })
+           .catch(error=>{
+            console.log(error.message);
+            // alert("Please Login Again");
+            navigate("/");
+           })
+    fetchBrand();
   }, []);
 
-  const handleBrandClick = (brand) => {
-    const brandId = brand._id;
-    api.post(import.meta.env.VITE_API_NODEPATH + "/api/brand/removebrand", {brandId})
-    .then(res=>{
-        console.log(res);
-        showSuccess(res.data.message);
-    })
-    .catch((err) =>
-    {
-        console.error(err.message);
-    })
-    setSelectedBrand(brand._id);
-    console.log("Selected brand:", brand.name, brand._id);
-  };
+
+const handleRemoveBrand = async (brand) => {
+  try {
+    const response = await api.post("/api/brand/removebrand", {
+      brandId: brand._id,
+    });
+
+    console.log(response.data);
+    
+    if (response.data.success) {
+      // Remove the deleted brand from the UI immediately
+      setData((prevData) =>
+        prevData.filter((item) => item._id !== brand._id)
+      );
+
+      showSuccess(response.data.message || "Brand removed successfully");
+    }
+  } catch (error) {
+    console.error(
+      "Brand removal error:",
+      error.response?.data?.message || error.message
+    );
+  }
+};
+
 
   return (
     <section className="category-page">
@@ -60,24 +90,26 @@ const Brands = () => {
         <p className="category-empty">No brands found.</p>
       ) : (
         <div className="category-grid">
-          {data.map((item) => (
+          
+        {data.map((item) => (
+        <div className="category-item" key={item._id || item.name}>
+            <span className="category-icon">
+            <i className="bi bi-patch-check-fill" />
+            </span>
+
+            <span className="category-name">{item.name}</span>
+
             <button
-              type="button"
-              key={item._id || item.name}
-              className={`category-item ${
-                selectedBrand === item._id ? "selected" : ""
-              }`}
-              onClick={() => handleBrandClick(item)}
+            type="button"
+            className="remove-brand-btn"
+            onClick={() => handleRemoveBrand(item)}
             >
-              <span className="category-icon">
-                <i className="bi bi-patch-check-fill" />
-              </span>
-
-              <span className="category-name">{item.name}</span>
-
-              <i className="bi bi-arrow-up-right category-arrow" />
+            <i className="bi bi-trash3" />
+            Remove
             </button>
-          ))}
+        </div>
+        ))}
+
         </div>
       )}
     </section>

@@ -16,30 +16,33 @@ const WishlistItems = () => {
   const token = localStorage.getItem("accessToken");
 
   // Fetch wishlist items
-  const fetchWishlist = async () => {
-    if (!token) {
-      setError("Please log in to view your wishlist");
-      showError("Please log in to view your wishlist");
-      setLoading(false);
-      return;
-    }
+  const fetchWishlist = async () => 
+    {
+      if (!token) 
+      {
+        setError("Please log in to view your wishlist");
+        showError("Please log in to view your wishlist");
+        setLoading(false);
+        return;
+      }
 
-    try {
-      setLoading(true);
-      setError("");
+      try {
+        setLoading(true);
+        setError("");
 
-      const response = await api.get(`/api/cart/getwishlist`);
+        const response = await api.get(`/api/cart/getwishlist`);
 
-      setWishlist(response.data?.wishlist?.items || []);
-    } catch (err) {
-      console.error("Wishlist fetch error:", err);
+        setWishlist(response.data?.wishlist?.items || []);
+      } 
+      catch (err) {
+        console.error("Wishlist fetch error:", err);
 
-      setError(err.response?.data?.message ||"Unable to load your wishlist. Please try again.");
-      showError(err.response?.data?.message ||"Unable to load your wishlist. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+        setError(err.response?.data?.message ||"Unable to load your wishlist. Please try again.");
+        showError(err.response?.data?.message ||"Unable to load your wishlist. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+   };
 
   useEffect(() => {
      api.post("/api/auth/authtoken", {}
