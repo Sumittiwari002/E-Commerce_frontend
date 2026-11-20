@@ -12,7 +12,11 @@ const Brandfilter = () => {
           setData(res.data.dataSet);
         })
 
-    },[])
+    },[]);
+
+    const brandoption = (brand)=>{
+      console.log(brand._id);
+    }
 
   return (
     <section className="filter-card">
@@ -21,9 +25,7 @@ const Brandfilter = () => {
       <div className="filter-options">
         {data.map((item) => (
           <label key={item.name} className="filter-option">
-            <input
-              type="radio"
-            />
+            <input type="radio" onClick={()=>{brandoption(item)}} />
 
             <span>{item.name}</span>
           </label>

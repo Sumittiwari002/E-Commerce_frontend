@@ -56,7 +56,7 @@ const AdminLayout = () => {
           )
         )}
 
-        <NavLink to="/home" className="adm-visit"><i className="bi bi-shop" />Visit Store<i className="bi bi-box-arrow-up-right ms-auto" /></NavLink>
+        <NavLink to="/" className="adm-visit"><i className="bi bi-shop" />Visit Store<i className="bi bi-box-arrow-up-right ms-auto" /></NavLink>
       </aside>
 
       <div className="adm-main">

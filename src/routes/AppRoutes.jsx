@@ -39,11 +39,14 @@ const Shell = () => {
       {!isAdminArea && <Header />}
       <main className={isAdminArea ? "" : "container"}>
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/newuser" element={<Registration />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/productdetails/:productid" element={<SingleProduct />} />
+
 
           <Route element={<ProtectedRoutes />}>
-            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Home />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/wishlist" element={<WishlistItems />} />
             <Route path="/productdetails/:productid" element={<SingleProduct />} />

@@ -59,7 +59,6 @@ const Productcard = () => {
     
     catch (error) 
     {
-      // console.error("Add to cart error:", error);
 
       if (error.response) {
         const message = error.response.data?.message;

@@ -1,33 +1,33 @@
 import Categoryfilter from "../components/Product/Categoryfilter";
 import Brandfilter from "../components/Product/Brandfilter";
 import Productcard from "../components/Product/Productcard";
-import { useNavigate } from "react-router-dom";
-import api from "../settings/axiosInstance";
-import { useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
+// import api from "../settings/axiosInstance";
+// import { useEffect } from "react";
 
 const Home = () => {
   
   const token = localStorage.getItem("accessToken");
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   console.log(token);
 
-  const products = [];
+  // const products = [];
 
   
-   useEffect(()=>{
-     api.post("/api/auth/authtoken", {}
-   )
-   .then(res=>{
-    console.log(res);
-   })
-   .catch(error=>{
-    console.log(error.message);
+  //  useEffect(()=>{
+  //    api.post("/api/auth/authtoken", {}
+  //  )
+  //  .then(res=>{
+  //   console.log(res);
+  //  })
+  //  .catch(error=>{
+  //   console.log(error.message);
   
-    // alert("Please Login Again");
-    navigate("/");
+  //   // alert("Please Login Again");
+  //   navigate("/");
     
-   });
-   }, []);
+  //  });
+  //  }, []);
   
     
   

@@ -1,190 +1,130 @@
+
 import { Link } from "react-router-dom";
-import "../../components/Product/Productcard.css";
 import { useState, useEffect } from "react";
 import api from "../../settings/axiosInstance";
-
+import { showSuccess } from "../../utilities/alert";
+import "../../components/Product/Productcard.css";
 
 const Products = () => {
   const [data1, setData1] = useState([]);
-  // const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(true);
 
+  // Fetch all products
+  const fetchProducts = async () => {
+    try {
+      const res = await api.get("/api/product/allProducts");
+      setData1(res.data.dataSet || []);
+    } catch (error) {
+      console.error(
+        "Product fetch error:",
+        error.response?.data || error.message
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    api
-      .get("/api/product/allProducts"
-      )
-      .then((res) => {
-        console.log(res.data);
-        setData1(res.data.dataSet);
-      })
-      .catch((error) => {
-        console.error("Product fetch error:", error);
-      });
+    fetchProducts();
   }, []);
 
+  // Remove product from database
+  const handleRemoveProduct = async (productId) => {
+    try {
+      const res = await api.post("/api/product/removeproduct", {
+        productId,
+      });
 
-  // ADD TO CART
+      // Update UI after successful deletion
+      setData1((prevData) =>
+        prevData.filter((item) => item._id !== productId)
+      );
 
-//   const handleAddToCart = async (productId) => {
-//     try {
-//       const token = localStorage.getItem("accessToken");
-//       console.log(productId);
-        
-//       // Check login
-//       if (!token) {
-//         // alert("Please login first");
-//         showError("Please Login First");
-//         return;
-//       }
-
-//       // Show loading only for clicked product
-//       setLoadingProduct(productId);
-
-//       const response = await api.post("/api/cart/addtocart",
-//         {
-//           productId: productId,
-//           quantity: 1,
-//         }
-//       );
-
-//       console.log("Add to cart response:", response.data);
-
-//       if (response.data.success) {
-//         showSuccess("Product added to cart successfully");
-//       }
-//     }
-    
-//     catch (error) 
-//     {
-//       // console.error("Add to cart error:", error);
-
-//       if (error.response) {
-//         const message = error.response.data?.message;
-
-//         if (error.response.status === 401) {
-//           showError(message || "Access token has expired")
-          
-//           // Optional: remove expired token
-//           localStorage.removeItem("accessToken");
-          
-//           // Optional: redirect to login
-//           navigate("/");
-//         } else {
-//           showError(message || "Something went wrong");
-//         }
-//       } else if (error.request) {
-//         showError("Server is not responding. Please try again.");
-
-//       } else {
-//         showError("Something went wrong. Please try again.");
-//       }
-//     }
-//      finally {
-//       setLoadingProduct(null);
-//     }
-//   };
-//     const handleAddToWishlist = async (productId) => {
-//     try {
-//       const token = localStorage.getItem("accessToken");
-      
-
-//       // Check login
-//       if (!token) {
-//         showError("Please Login First");
-//         return;
-//       }
-
-//       // Show loading only for clicked product
-//       setLoadingProduct(productId);
-
-//       const response = await api.post("/api/cart/addtowishlist",
-//         {
-//           productId: productId,
-//           quantity: 1,
-//         }
-//       );
-
-//       console.log("Add to Wishlist response:", response.data);
-
-//       if (response.data.success) {
-//         showSuccess("Product added to Wishlist successfully");
-//       }
-//     }
-    
-//     catch (error) 
-//     {
-//       // console.error("Add to cart error:", error);
-
-//       if (error.response) {
-//         const message = error.response.data?.message;
-
-//         if (error.response.status === 401) {
-//           showError(message || "Access token has expired");
-          
-//           // Optional: remove expired token
-//           localStorage.removeItem("accessToken");
-          
-//           // Optional: redirect to login
-//           navigate("/");
-//         } else {
-//           showError(message || "Something went wrong");
-//         }
-//       } else if (error.request) {
-//         showError("Server is not responding. Please try again.");
-//       } else {
-//         showError("Something went wrong. Please try again.");
-//       }
-//     }
-//      finally {
-//       setLoadingProduct(null);
-//     }
-//   };
+      showSuccess(
+        res.data.message || "Product removed successfully"
+      );
+    } catch (error) {
+      console.error(
+        "Product removal error:",
+        error.response?.data || error.message
+      );
+    }
+  };
 
   return (
-  <div className="product-page">
-    <div className="product-grid">
-      {data1.map((item) => {
-        const productId = item._id;
+    <section className="product-page">
+      <div className="category-header">
+        <div>
+          <h2>Products</h2>
+          <p>Manage and organize your products</p>
+        </div>
 
-        return (
-          <article className="product-card" key={productId}>
-            <div className="product-image">
-              <img src={item.path} alt={item.name} />
-            </div>
+        <span className="category-count">
+          {data1.length} Products
+        </span>
+      </div>
 
-            <div className="product-info">
-              <span className="product-category">
-                {item.category?.name || "Electronics"}
-              </span>
+      {loading ? (
+        <p className="category-empty">Loading products...</p>
+      ) : data1.length === 0 ? (
+        <p className="category-empty">No products found.</p>
+      ) : (
+        <div className="product-grid">
+          {data1.map((item) => {
+            const productId = item._id;
 
-              <h3 className="product-title">{item.name}</h3>
+            return (
+              <article className="product-card" key={productId}>
+                <div className="product-image">
+                  <img src={item.path} alt={item.name} />
+                </div>
 
-              <div className="product-rating">
-                <span className="stars">★★★★★</span>
-                <span className="rating-count">(4.5)</span>
-              </div>
+                <div className="product-info">
+                  <span className="product-category">
+                    {item.category?.name || "Electronics"}
+                  </span>
 
-              <div className="price-box">
-                <span className="price">₹{item.price}</span>
-              </div>
+                  <h3 className="product-title">
+                    {item.name}
+                  </h3>
 
-              <div className="product-actions">
-                <button className="add-cart-btn">Remove</button>
+                  <div className="product-rating">
+                    <span className="stars">★★★★★</span>
+                    <span className="rating-count">(4.5)</span>
+                  </div>
 
-                <Link
-                  className="view-btn"
-                  to={`/productdetails/${productId}`}
-                >
-                  View
-                </Link>
-              </div>
-            </div>
-          </article>
-        );
-      })}
-    </div>
-  </div>
-);
+                  <div className="price-box">
+                    <span className="price">
+                      ₹{item.price}
+                    </span>
+                  </div>
+
+                  <div className="product-actions">
+                    <button
+                      type="button"
+                      className="add-cart-btn"
+                      onClick={() =>
+                        handleRemoveProduct(productId)
+                      }
+                    >
+                      Remove
+                    </button>
+
+                    <Link
+                      className="view-btn"
+                      to={`/productdetails/${productId}`}
+                    >
+                      View
+                    </Link>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      )}
+    </section>
+  );
 };
 
 export default Products;

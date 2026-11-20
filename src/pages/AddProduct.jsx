@@ -207,11 +207,7 @@ const AddProduct = () => {
               <div className="form-group">
                 <label>Product Image</label>
 
-                <input
-                  type="file"
-                  className="form-control"
-                  onChange={myfunc}
-                />
+                <input type="file" className="form-control" onChange={myfunc} />
               </div>
 
               <div className="form-group">

@@ -49,7 +49,7 @@ function SalesChart() {
     </svg>
   );
 }
-
+ 
 function Donut({ slices, total }) {
   const r = 62, C = 2 * Math.PI * r; let off = 0;
   return (

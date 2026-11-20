@@ -1,18 +1,19 @@
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import "../components/login/signupform.css";
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 
 const Login = () => {
 
   const [errmessage, setErrmessage] = useState('');
-  const navigate = useNavigate();
   const { login } = useAuth();
+  const navigate = useNavigate();
+
+
   const LoginSchema = Yup.object({
     email: Yup.string()
       .email("Invalid email")
@@ -45,15 +46,14 @@ const Login = () => {
 
               if(res.data.success === true){
                 login(res.data.data.accessToken, res.data.data.user);
-                navigate("/home");
               }
+              navigate("/");
               
             })
             .catch(err=>{
-              // console.log(err.response.status);
+              console.log(err.response.status);
               // console.log(err.response.data.message);
-              setErrmessage(err.response.data.message);
-              
+              // setErrmessage(err.response.data.message);
               
             })
           }}

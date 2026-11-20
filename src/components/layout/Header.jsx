@@ -10,7 +10,7 @@ const Header = () => {
       <div className="container header-wrapper">
 
         <div className="logo">
-          <NavLink to={isAuthenticated ? "/home" : "/"}>ShopEase</NavLink>
+          <NavLink to={isAuthenticated ? "/" : "/login"}>ShopEase</NavLink>
         </div>
 
         <nav aria-label="Main Navigation">
@@ -19,7 +19,7 @@ const Header = () => {
             {!isAuthenticated && (
               <>
                 <li>
-                  <NavLink to="/">Login</NavLink>
+                  <NavLink to="/login">Login</NavLink>
                 </li>
 
                 <li>
@@ -32,7 +32,7 @@ const Header = () => {
             {isAuthenticated && (
               <>
                 <li>
-                  <NavLink to="/home">Home</NavLink>
+                  <NavLink to="/">Home</NavLink>
                 </li>
 
                 <li>
